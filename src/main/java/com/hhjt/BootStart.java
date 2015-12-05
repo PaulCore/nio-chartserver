@@ -14,6 +14,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.ssl.SslHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -48,6 +49,7 @@ public class BootStart {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline()
 //                                    .addLast(new SslHandler(engine))
+                                    .addLast("ping",new IdleStateHandler(10,5,15))
                                     .addLast(new LineBasedFrameDecoder(1024))
                                     .addLast(new MessageDecodeHandler())
                                     .addLast(new MessageHandle())
